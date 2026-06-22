@@ -1,7 +1,5 @@
-using Anthropic.SDK;
-using Anthropic.SDK.Constants;
-using Anthropic.SDK.Messaging;
 using DocumentSummariser.Models;
+using DocumentSummariser.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DocumentSummariser.Controllers;
@@ -10,11 +8,26 @@ namespace DocumentSummariser.Controllers;
 [Route("api/[controller]")]
 public class SummariseController : ControllerBase
 {
-    private readonly AnthropicClient _anthropicClient;
+    private const string ContentCannotBeEmpty = "Content cannot be empty.";
 
-    public SummariseController(AnthropicClient anthropicClient)
+    private readonly ISummariseService _summariseService;
+
+    public SummariseController(ISummariseService summariseService)
     {
-        _anthropicClient = anthropicClient;
+        _summariseService = summariseService ?? throw new ArgumentNullException(nameof(summariseService));
+    }
+
+    [HttpPost("actions")]
+    public async Task<ActionResult<SummariseResponse>> ExtractActions([FromBody] SummariseRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Content))
+        {
+            return BadRequest(ContentCannotBeEmpty);
+        }
+
+        string actions = await _summariseService.ExtractActionsAsync(request.Content);
+
+        return Ok(new SummariseResponse { Summary = actions });
     }
 
     [HttpPost]
@@ -22,30 +35,10 @@ public class SummariseController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(request.Content))
         {
-            return BadRequest("Content cannot be empty.");
+            return BadRequest(ContentCannotBeEmpty);
         }
 
-        List<Message> messages = new List<Message>
-        {
-            new Message(RoleType.User, request.Content)
-        };
-
-        MessageParameters messageParameters = new MessageParameters
-        {
-            Model = AnthropicModels.Claude46Sonnet,
-            MaxTokens = 1000,
-            System = new List<SystemMessage>
-            {
-                new SystemMessage("You are a helpful assistant that summarises documents clearly and concisely. Return a brief summary followed by a list of key points.")
-            },
-            Messages = messages,
-            Stream = false,
-            Temperature = 1.0m
-        };
-
-        MessageResponse response = await _anthropicClient.Messages.GetClaudeMessageAsync(messageParameters);
-
-        string summary = response.Content.OfType<TextContent>().FirstOrDefault()?.Text ?? "No summary available.";
+        string summary = await _summariseService.SummariseAsync(request.Content);
 
         return Ok(new SummariseResponse { Summary = summary });
     }

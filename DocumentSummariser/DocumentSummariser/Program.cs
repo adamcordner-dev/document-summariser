@@ -1,4 +1,5 @@
 using Anthropic.SDK;
+using DocumentSummariser.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddSingleton<AnthropicClient>(serviceProvider =>
     var apiKey = builder.Configuration["Anthropic:ApiKey"];
     return new AnthropicClient(apiKey);
 });
+
+builder.Services.AddScoped<ISummariseService, SummariseService>();
 
 var app = builder.Build();
 
