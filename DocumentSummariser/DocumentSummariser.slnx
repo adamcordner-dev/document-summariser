@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
   <Project Path="DocumentSummariser.Tests/DocumentSummariser.Tests.csproj" />
   <Project Path="DocumentSummariser/DocumentSummariser.csproj" />
 </Solution>
