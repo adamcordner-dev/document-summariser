@@ -212,3 +212,4 @@ AI tools (GitHub Copilot and Claude) were used during development for SDK usage 
 This project uses the Anthropic Claude API. Usage of the API is subject to [Anthropic's usage policies](https://www.anthropic.com/legal/usage-policy).
 
 The sample meeting minutes used in the example section are publicly available from Eastern Connecticut State University and are used here for demonstration purposes only. They are not affiliated with this project.
+ 
