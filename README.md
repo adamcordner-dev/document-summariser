@@ -4,6 +4,8 @@ A RESTful ASP.NET Core Web API that uses the Anthropic Claude API to summarise d
 
 Built as a portfolio project to demonstrate LLM API integration, clean architecture, dependency injection, and unit testing in a .NET Core context.
 
+![Build and Test](https://github.com/adamcordner-dev/document-summariser/actions/workflows/dotnet.yml/badge.svg)
+
 ---
 
 ## Project Summary
@@ -212,4 +214,3 @@ AI tools (GitHub Copilot and Claude) were used during development for SDK usage 
 This project uses the Anthropic Claude API. Usage of the API is subject to [Anthropic's usage policies](https://www.anthropic.com/legal/usage-policy).
 
 The sample meeting minutes used in the example section are publicly available from Eastern Connecticut State University and are used here for demonstration purposes only. They are not affiliated with this project.
- 
