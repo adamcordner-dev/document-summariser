@@ -17,6 +17,7 @@ builder.Services.AddSingleton<AnthropicClient>(serviceProvider =>
     return new AnthropicClient(apiKey);
 });
 
+builder.Services.AddSingleton<IAnthropicMessageClient, AnthropicMessageClient>();
 builder.Services.AddScoped<ISummariseService, SummariseService>();
 
 var app = builder.Build();
