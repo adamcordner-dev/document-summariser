@@ -1,3 +1,5 @@
+using Anthropic.SDK;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +8,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Register Anthropic client
+builder.Services.AddSingleton<AnthropicClient>(serviceProvider =>
+{
+    var apiKey = builder.Configuration["Anthropic:ApiKey"];
+    return new AnthropicClient(apiKey);
+});
 
 var app = builder.Build();
 
